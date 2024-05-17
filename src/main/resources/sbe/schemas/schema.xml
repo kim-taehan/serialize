@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sbe:messageSchema
+        xmlns:sbe="http://fixprotocol.io/2016/sbe"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        package="baseline"
+        id="1"
+        version="0"
+        semanticVersion="5.2"
+        description="Example schema"
+        byteOrder="littleEndian">
+    <xi:include href="types.xml"/>
+    <xi:include href="custom-types.xml"/>
+    <xi:include href="messages.xml"/>
+</sbe:messageSchema>

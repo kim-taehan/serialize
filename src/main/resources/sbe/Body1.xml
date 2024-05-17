@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbe:messageSchema xmlns:sbe="http://fixprotocol.io/2016/sbe"
+                   package="com.baeldung.sbe.stub" id="1" version="0" semanticVersion="5.2"
+                   description="A schema represents stock market data.">
+    <types>
+        <composite name="messageHeader"
+                   description="Message identifiers and length of message root.">
+            <type name="blockLength" primitiveType="uint16"/>
+            <type name="templateId" primitiveType="uint16"/>
+            <type name="schemaId" primitiveType="uint16"/>
+            <type name="version" primitiveType="uint16"/>
+        </composite>
+        <composite name="groupSizeEncoding">
+            <type name="blockLength" primitiveType="uint16"/>
+            <type name="numInGroup" primitiveType="uint16" semanticType="NumInGroup"/>
+            <type name="numGroups" primitiveType="uint16" />
+            <type name="numVarDataFields" primitiveType="uint16" />
+        </composite>
+<!--        <composite name="Game"-->
+<!--                   description="A quote represents the price of a stock in a market">-->
+<!--            <ref name="market" type="Market"/>-->
+<!--            <ref name="symbol" type="Symbol"/>-->
+<!--            <ref name="price" type="Decimal"/>-->
+<!--            <ref name="currency" type="Currency"/>-->
+<!--        </composite>-->
+    </types>
+    <sbe:message name="Body1" id="1" description="Represents a quote and amount of trade">
+        <field name="blockIdx" id="2" type="uint16"/>
+        <group name="games" id="3">
+            <field name="matchNo" id="4" type="uint16" semanticType="int"/>
+            <field name="matchSel" id="5" type="uint16" semanticType="int"/>
+            <field name="matchOdds" id="6" type="uint16" semanticType="int"/>
+            <field name="matchHandi" id="7" type="uint16" semanticType="int"/>
+        </group>
+    </sbe:message>
+</sbe:messageSchema>
