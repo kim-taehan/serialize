@@ -1,0 +1,33 @@
+syntax = "proto3";
+package theater;
+option java_package = "stn.serialization.protobuf";
+
+message Theater {
+    Header header = 1;
+    int64 blockIdx = 2;
+    int64 progNum = 3;
+    string betMode = 4;
+    int64 poolStake = 5;
+    int64 matchCnt = 6;
+    repeated Game games = 7;
+}
+message Game{
+    int64 matchNo = 1;
+    int64 matchSel = 2;
+    int64 matchOdds = 3;
+    int64 matchHandi = 4;
+}
+
+message Header{
+    string startCode = 1;
+    string transType = 2;
+    int64 transLen = 3;
+    string transId = 4;
+    int64 tkserNum = 5;
+    bool resyncYn = 6;
+    string resultCd = 7;
+    string tagNum = 8;
+    string gameId = 9;
+    int64 totalStake = 10;
+    int64 gcBlockCnt = 11;
+}

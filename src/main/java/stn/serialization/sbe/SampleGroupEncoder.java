@@ -5,18 +5,18 @@ import org.agrona.MutableDirectBuffer;
 
 
 /**
- * Represents a quote and amount of trade
+ * Sample with group
  */
 @SuppressWarnings("all")
-public final class Body1Encoder
+public final class SampleGroupEncoder
 {
-    public static final int BLOCK_LENGTH = 2;
+    public static final int BLOCK_LENGTH = 65;
     public static final int TEMPLATE_ID = 1;
     public static final int SCHEMA_ID = 1;
     public static final int SCHEMA_VERSION = 0;
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
-    private final Body1Encoder parentMessage = this;
+    private final SampleGroupEncoder parentMessage = this;
     private MutableDirectBuffer buffer;
     private int initialOffset;
     private int offset;
@@ -62,7 +62,7 @@ public final class Body1Encoder
         return offset;
     }
 
-    public Body1Encoder wrap(final MutableDirectBuffer buffer, final int offset)
+    public SampleGroupEncoder wrap(final MutableDirectBuffer buffer, final int offset)
     {
         if (buffer != this.buffer)
         {
@@ -75,7 +75,7 @@ public final class Body1Encoder
         return this;
     }
 
-    public Body1Encoder wrapAndApplyHeader(
+    public SampleGroupEncoder wrapAndApplyHeader(
         final MutableDirectBuffer buffer, final int offset, final MessageHeaderEncoder headerEncoder)
     {
         headerEncoder
@@ -103,9 +103,47 @@ public final class Body1Encoder
         this.limit = limit;
     }
 
-    public static int blockIdxId()
+    public static int headerId()
     {
         return 2;
+    }
+
+    public static int headerSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int headerEncodingOffset()
+    {
+        return 0;
+    }
+
+    public static int headerEncodingLength()
+    {
+        return 55;
+    }
+
+    public static String headerMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    private final HeaderEncoder header = new HeaderEncoder();
+
+    public HeaderEncoder header()
+    {
+        header.wrap(buffer, offset + 0);
+        return header;
+    }
+
+    public static int blockIdxId()
+    {
+        return 3;
     }
 
     public static int blockIdxSinceVersion()
@@ -115,7 +153,7 @@ public final class Body1Encoder
 
     public static int blockIdxEncodingOffset()
     {
-        return 0;
+        return 55;
     }
 
     public static int blockIdxEncodingLength()
@@ -133,52 +171,335 @@ public final class Body1Encoder
         return "";
     }
 
-    public static int blockIdxNullValue()
+    public static short blockIdxNullValue()
     {
-        return 65535;
+        return (short)-32768;
     }
 
-    public static int blockIdxMinValue()
+    public static short blockIdxMinValue()
     {
-        return 0;
+        return (short)-32767;
     }
 
-    public static int blockIdxMaxValue()
+    public static short blockIdxMaxValue()
     {
-        return 65534;
+        return (short)32767;
     }
 
-    public Body1Encoder blockIdx(final int value)
+    public SampleGroupEncoder blockIdx(final short value)
     {
-        buffer.putShort(offset + 0, (short)value, java.nio.ByteOrder.LITTLE_ENDIAN);
+        buffer.putShort(offset + 55, value, java.nio.ByteOrder.LITTLE_ENDIAN);
         return this;
     }
 
 
-    private final GamesEncoder games = new GamesEncoder(this);
-
-    public static long gamesId()
+    public static int progNumId()
     {
-        return 3;
+        return 4;
     }
 
-    public GamesEncoder gamesCount(final int count)
+    public static int progNumSinceVersion()
     {
-        games.wrap(buffer, count);
-        return games;
+        return 0;
     }
 
-    public static final class GamesEncoder
+    public static int progNumEncodingOffset()
     {
-        public static final int HEADER_SIZE = 8;
-        private final Body1Encoder parentMessage;
+        return 57;
+    }
+
+    public static int progNumEncodingLength()
+    {
+        return 2;
+    }
+
+    public static String progNumMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static short progNumNullValue()
+    {
+        return (short)-32768;
+    }
+
+    public static short progNumMinValue()
+    {
+        return (short)-32767;
+    }
+
+    public static short progNumMaxValue()
+    {
+        return (short)32767;
+    }
+
+    public SampleGroupEncoder progNum(final short value)
+    {
+        buffer.putShort(offset + 57, value, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return this;
+    }
+
+
+    public static int betModeId()
+    {
+        return 5;
+    }
+
+    public static int betModeSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int betModeEncodingOffset()
+    {
+        return 59;
+    }
+
+    public static int betModeEncodingLength()
+    {
+        return 2;
+    }
+
+    public static String betModeMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static byte betModeNullValue()
+    {
+        return (byte)0;
+    }
+
+    public static byte betModeMinValue()
+    {
+        return (byte)32;
+    }
+
+    public static byte betModeMaxValue()
+    {
+        return (byte)126;
+    }
+
+    public static int betModeLength()
+    {
+        return 2;
+    }
+
+
+    public SampleGroupEncoder betMode(final int index, final byte value)
+    {
+        if (index < 0 || index >= 2)
+        {
+            throw new IndexOutOfBoundsException("index out of range: index=" + index);
+        }
+
+        final int pos = offset + 59 + (index * 1);
+        buffer.putByte(pos, value);
+
+        return this;
+    }
+    public SampleGroupEncoder putBetMode(final byte value0, final byte value1)
+    {
+        buffer.putByte(offset + 59, value0);
+        buffer.putByte(offset + 60, value1);
+
+        return this;
+    }
+
+    public static String betModeCharacterEncoding()
+    {
+        return java.nio.charset.StandardCharsets.US_ASCII.name();
+    }
+
+    public SampleGroupEncoder putBetMode(final byte[] src, final int srcOffset)
+    {
+        final int length = 2;
+        if (srcOffset < 0 || srcOffset > (src.length - length))
+        {
+            throw new IndexOutOfBoundsException("Copy will go out of range: offset=" + srcOffset);
+        }
+
+        buffer.putBytes(offset + 59, src, srcOffset, length);
+
+        return this;
+    }
+
+    public SampleGroupEncoder betMode(final String src)
+    {
+        final int length = 2;
+        final int srcLength = null == src ? 0 : src.length();
+        if (srcLength > length)
+        {
+            throw new IndexOutOfBoundsException("String too large for copy: byte length=" + srcLength);
+        }
+
+        buffer.putStringWithoutLengthAscii(offset + 59, src);
+
+        for (int start = srcLength; start < length; ++start)
+        {
+            buffer.putByte(offset + 59 + start, (byte)0);
+        }
+
+        return this;
+    }
+
+    public SampleGroupEncoder betMode(final CharSequence src)
+    {
+        final int length = 2;
+        final int srcLength = null == src ? 0 : src.length();
+        if (srcLength > length)
+        {
+            throw new IndexOutOfBoundsException("CharSequence too large for copy: byte length=" + srcLength);
+        }
+
+        buffer.putStringWithoutLengthAscii(offset + 59, src);
+
+        for (int start = srcLength; start < length; ++start)
+        {
+            buffer.putByte(offset + 59 + start, (byte)0);
+        }
+
+        return this;
+    }
+
+    public static int poolStakeId()
+    {
+        return 6;
+    }
+
+    public static int poolStakeSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int poolStakeEncodingOffset()
+    {
+        return 61;
+    }
+
+    public static int poolStakeEncodingLength()
+    {
+        return 2;
+    }
+
+    public static String poolStakeMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static short poolStakeNullValue()
+    {
+        return (short)-32768;
+    }
+
+    public static short poolStakeMinValue()
+    {
+        return (short)-32767;
+    }
+
+    public static short poolStakeMaxValue()
+    {
+        return (short)32767;
+    }
+
+    public SampleGroupEncoder poolStake(final short value)
+    {
+        buffer.putShort(offset + 61, value, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return this;
+    }
+
+
+    public static int matchCntId()
+    {
+        return 7;
+    }
+
+    public static int matchCntSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int matchCntEncodingOffset()
+    {
+        return 63;
+    }
+
+    public static int matchCntEncodingLength()
+    {
+        return 2;
+    }
+
+    public static String matchCntMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static short matchCntNullValue()
+    {
+        return (short)-32768;
+    }
+
+    public static short matchCntMinValue()
+    {
+        return (short)-32767;
+    }
+
+    public static short matchCntMaxValue()
+    {
+        return (short)32767;
+    }
+
+    public SampleGroupEncoder matchCnt(final short value)
+    {
+        buffer.putShort(offset + 63, value, java.nio.ByteOrder.LITTLE_ENDIAN);
+        return this;
+    }
+
+
+    private final GroupEncoder group = new GroupEncoder(this);
+
+    public static long groupId()
+    {
+        return 10;
+    }
+
+    public GroupEncoder groupCount(final int count)
+    {
+        group.wrap(buffer, count);
+        return group;
+    }
+
+    public static final class GroupEncoder
+    {
+        public static final int HEADER_SIZE = 4;
+        private final SampleGroupEncoder parentMessage;
         private MutableDirectBuffer buffer;
         private int count;
         private int index;
         private int offset;
         private int initialLimit;
 
-        GamesEncoder(final Body1Encoder parentMessage)
+        GroupEncoder(final SampleGroupEncoder parentMessage)
         {
             this.parentMessage = parentMessage;
         }
@@ -204,7 +525,7 @@ public final class Body1Encoder
             buffer.putShort(limit + 2, (short)count, java.nio.ByteOrder.LITTLE_ENDIAN);
         }
 
-        public GamesEncoder next()
+        public GroupEncoder next()
         {
             if (index >= count)
             {
@@ -248,7 +569,7 @@ public final class Body1Encoder
 
         public static int matchNoId()
         {
-            return 4;
+            return 11;
         }
 
         public static int matchNoSinceVersion()
@@ -272,10 +593,6 @@ public final class Body1Encoder
             {
                 return "required";
             }
-            if (MetaAttribute.SEMANTIC_TYPE == metaAttribute)
-            {
-                return "int";
-            }
 
             return "";
         }
@@ -295,7 +612,7 @@ public final class Body1Encoder
             return 65534;
         }
 
-        public GamesEncoder matchNo(final int value)
+        public GroupEncoder matchNo(final int value)
         {
             buffer.putShort(offset + 0, (short)value, java.nio.ByteOrder.LITTLE_ENDIAN);
             return this;
@@ -304,7 +621,7 @@ public final class Body1Encoder
 
         public static int matchSelId()
         {
-            return 5;
+            return 12;
         }
 
         public static int matchSelSinceVersion()
@@ -328,10 +645,6 @@ public final class Body1Encoder
             {
                 return "required";
             }
-            if (MetaAttribute.SEMANTIC_TYPE == metaAttribute)
-            {
-                return "int";
-            }
 
             return "";
         }
@@ -351,7 +664,7 @@ public final class Body1Encoder
             return 65534;
         }
 
-        public GamesEncoder matchSel(final int value)
+        public GroupEncoder matchSel(final int value)
         {
             buffer.putShort(offset + 2, (short)value, java.nio.ByteOrder.LITTLE_ENDIAN);
             return this;
@@ -360,7 +673,7 @@ public final class Body1Encoder
 
         public static int matchOddsId()
         {
-            return 6;
+            return 13;
         }
 
         public static int matchOddsSinceVersion()
@@ -384,10 +697,6 @@ public final class Body1Encoder
             {
                 return "required";
             }
-            if (MetaAttribute.SEMANTIC_TYPE == metaAttribute)
-            {
-                return "int";
-            }
 
             return "";
         }
@@ -407,7 +716,7 @@ public final class Body1Encoder
             return 65534;
         }
 
-        public GamesEncoder matchOdds(final int value)
+        public GroupEncoder matchOdds(final int value)
         {
             buffer.putShort(offset + 4, (short)value, java.nio.ByteOrder.LITTLE_ENDIAN);
             return this;
@@ -416,7 +725,7 @@ public final class Body1Encoder
 
         public static int matchHandiId()
         {
-            return 7;
+            return 14;
         }
 
         public static int matchHandiSinceVersion()
@@ -440,10 +749,6 @@ public final class Body1Encoder
             {
                 return "required";
             }
-            if (MetaAttribute.SEMANTIC_TYPE == metaAttribute)
-            {
-                return "int";
-            }
 
             return "";
         }
@@ -463,7 +768,7 @@ public final class Body1Encoder
             return 65534;
         }
 
-        public GamesEncoder matchHandi(final int value)
+        public GroupEncoder matchHandi(final int value)
         {
             buffer.putShort(offset + 6, (short)value, java.nio.ByteOrder.LITTLE_ENDIAN);
             return this;
@@ -488,7 +793,7 @@ public final class Body1Encoder
             return builder;
         }
 
-        final Body1Decoder decoder = new Body1Decoder();
+        final SampleGroupDecoder decoder = new SampleGroupDecoder();
         decoder.wrap(buffer, initialOffset, BLOCK_LENGTH, SCHEMA_VERSION);
 
         return decoder.appendTo(builder);

@@ -3,12 +3,16 @@ package stn.serialization.sbe;
 
 import org.agrona.MutableDirectBuffer;
 
+
+/**
+ * Repeating group dimensions.
+ */
 @SuppressWarnings("all")
 public final class GroupSizeEncodingEncoder
 {
     public static final int SCHEMA_ID = 1;
     public static final int SCHEMA_VERSION = 0;
-    public static final int ENCODED_LENGTH = 8;
+    public static final int ENCODED_LENGTH = 4;
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
     private int offset;
@@ -110,70 +114,6 @@ public final class GroupSizeEncodingEncoder
     public GroupSizeEncodingEncoder numInGroup(final int value)
     {
         buffer.putShort(offset + 2, (short)value, java.nio.ByteOrder.LITTLE_ENDIAN);
-        return this;
-    }
-
-
-    public static int numGroupsEncodingOffset()
-    {
-        return 4;
-    }
-
-    public static int numGroupsEncodingLength()
-    {
-        return 2;
-    }
-
-    public static int numGroupsNullValue()
-    {
-        return 65535;
-    }
-
-    public static int numGroupsMinValue()
-    {
-        return 0;
-    }
-
-    public static int numGroupsMaxValue()
-    {
-        return 65534;
-    }
-
-    public GroupSizeEncodingEncoder numGroups(final int value)
-    {
-        buffer.putShort(offset + 4, (short)value, java.nio.ByteOrder.LITTLE_ENDIAN);
-        return this;
-    }
-
-
-    public static int numVarDataFieldsEncodingOffset()
-    {
-        return 6;
-    }
-
-    public static int numVarDataFieldsEncodingLength()
-    {
-        return 2;
-    }
-
-    public static int numVarDataFieldsNullValue()
-    {
-        return 65535;
-    }
-
-    public static int numVarDataFieldsMinValue()
-    {
-        return 0;
-    }
-
-    public static int numVarDataFieldsMaxValue()
-    {
-        return 65534;
-    }
-
-    public GroupSizeEncodingEncoder numVarDataFields(final int value)
-    {
-        buffer.putShort(offset + 6, (short)value, java.nio.ByteOrder.LITTLE_ENDIAN);
         return this;
     }
 

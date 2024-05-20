@@ -5,18 +5,18 @@ import org.agrona.DirectBuffer;
 
 
 /**
- * Represents a quote and amount of trade
+ * Sample with group
  */
 @SuppressWarnings("all")
-public final class Body1Decoder
+public final class SampleGroupDecoder
 {
-    public static final int BLOCK_LENGTH = 2;
+    public static final int BLOCK_LENGTH = 65;
     public static final int TEMPLATE_ID = 1;
     public static final int SCHEMA_ID = 1;
     public static final int SCHEMA_VERSION = 0;
     public static final java.nio.ByteOrder BYTE_ORDER = java.nio.ByteOrder.LITTLE_ENDIAN;
 
-    private final Body1Decoder parentMessage = this;
+    private final SampleGroupDecoder parentMessage = this;
     private DirectBuffer buffer;
     private int initialOffset;
     private int offset;
@@ -64,7 +64,7 @@ public final class Body1Decoder
         return offset;
     }
 
-    public Body1Decoder wrap(
+    public SampleGroupDecoder wrap(
         final DirectBuffer buffer,
         final int offset,
         final int actingBlockLength,
@@ -83,7 +83,7 @@ public final class Body1Decoder
         return this;
     }
 
-    public Body1Decoder wrapAndApplyHeader(
+    public SampleGroupDecoder wrapAndApplyHeader(
         final DirectBuffer buffer,
         final int offset,
         final MessageHeaderDecoder headerDecoder)
@@ -103,7 +103,7 @@ public final class Body1Decoder
             headerDecoder.version());
     }
 
-    public Body1Decoder sbeRewind()
+    public SampleGroupDecoder sbeRewind()
     {
         return wrap(buffer, initialOffset, actingBlockLength, actingVersion);
     }
@@ -133,9 +133,47 @@ public final class Body1Decoder
         this.limit = limit;
     }
 
-    public static int blockIdxId()
+    public static int headerId()
     {
         return 2;
+    }
+
+    public static int headerSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int headerEncodingOffset()
+    {
+        return 0;
+    }
+
+    public static int headerEncodingLength()
+    {
+        return 55;
+    }
+
+    public static String headerMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    private final HeaderDecoder header = new HeaderDecoder();
+
+    public HeaderDecoder header()
+    {
+        header.wrap(buffer, offset + 0);
+        return header;
+    }
+
+    public static int blockIdxId()
+    {
+        return 3;
     }
 
     public static int blockIdxSinceVersion()
@@ -145,7 +183,7 @@ public final class Body1Decoder
 
     public static int blockIdxEncodingOffset()
     {
-        return 0;
+        return 55;
     }
 
     public static int blockIdxEncodingLength()
@@ -163,57 +201,328 @@ public final class Body1Decoder
         return "";
     }
 
-    public static int blockIdxNullValue()
+    public static short blockIdxNullValue()
     {
-        return 65535;
+        return (short)-32768;
     }
 
-    public static int blockIdxMinValue()
+    public static short blockIdxMinValue()
+    {
+        return (short)-32767;
+    }
+
+    public static short blockIdxMaxValue()
+    {
+        return (short)32767;
+    }
+
+    public short blockIdx()
+    {
+        return buffer.getShort(offset + 55, java.nio.ByteOrder.LITTLE_ENDIAN);
+    }
+
+
+    public static int progNumId()
+    {
+        return 4;
+    }
+
+    public static int progNumSinceVersion()
     {
         return 0;
     }
 
-    public static int blockIdxMaxValue()
+    public static int progNumEncodingOffset()
     {
-        return 65534;
+        return 57;
     }
 
-    public int blockIdx()
+    public static int progNumEncodingLength()
     {
-        return (buffer.getShort(offset + 0, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
+        return 2;
+    }
+
+    public static String progNumMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static short progNumNullValue()
+    {
+        return (short)-32768;
+    }
+
+    public static short progNumMinValue()
+    {
+        return (short)-32767;
+    }
+
+    public static short progNumMaxValue()
+    {
+        return (short)32767;
+    }
+
+    public short progNum()
+    {
+        return buffer.getShort(offset + 57, java.nio.ByteOrder.LITTLE_ENDIAN);
     }
 
 
-    private final GamesDecoder games = new GamesDecoder(this);
-
-    public static long gamesDecoderId()
+    public static int betModeId()
     {
-        return 3;
+        return 5;
     }
 
-    public static int gamesDecoderSinceVersion()
+    public static int betModeSinceVersion()
     {
         return 0;
     }
 
-    public GamesDecoder games()
+    public static int betModeEncodingOffset()
     {
-        games.wrap(buffer);
-        return games;
+        return 59;
     }
 
-    public static final class GamesDecoder
-        implements Iterable<GamesDecoder>, java.util.Iterator<GamesDecoder>
+    public static int betModeEncodingLength()
     {
-        public static final int HEADER_SIZE = 8;
-        private final Body1Decoder parentMessage;
+        return 2;
+    }
+
+    public static String betModeMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static byte betModeNullValue()
+    {
+        return (byte)0;
+    }
+
+    public static byte betModeMinValue()
+    {
+        return (byte)32;
+    }
+
+    public static byte betModeMaxValue()
+    {
+        return (byte)126;
+    }
+
+    public static int betModeLength()
+    {
+        return 2;
+    }
+
+
+    public byte betMode(final int index)
+    {
+        if (index < 0 || index >= 2)
+        {
+            throw new IndexOutOfBoundsException("index out of range: index=" + index);
+        }
+
+        final int pos = offset + 59 + (index * 1);
+
+        return buffer.getByte(pos);
+    }
+
+
+    public static String betModeCharacterEncoding()
+    {
+        return java.nio.charset.StandardCharsets.US_ASCII.name();
+    }
+
+    public int getBetMode(final byte[] dst, final int dstOffset)
+    {
+        final int length = 2;
+        if (dstOffset < 0 || dstOffset > (dst.length - length))
+        {
+            throw new IndexOutOfBoundsException("Copy will go out of range: offset=" + dstOffset);
+        }
+
+        buffer.getBytes(offset + 59, dst, dstOffset, length);
+
+        return length;
+    }
+
+    public String betMode()
+    {
+        final byte[] dst = new byte[2];
+        buffer.getBytes(offset + 59, dst, 0, 2);
+
+        int end = 0;
+        for (; end < 2 && dst[end] != 0; ++end);
+
+        return new String(dst, 0, end, java.nio.charset.StandardCharsets.US_ASCII);
+    }
+
+
+    public int getBetMode(final Appendable value)
+    {
+        for (int i = 0; i < 2; ++i)
+        {
+            final int c = buffer.getByte(offset + 59 + i) & 0xFF;
+            if (c == 0)
+            {
+                return i;
+            }
+
+            try
+            {
+                value.append(c > 127 ? '?' : (char)c);
+            }
+            catch (final java.io.IOException ex)
+            {
+                throw new java.io.UncheckedIOException(ex);
+            }
+        }
+
+        return 2;
+    }
+
+
+    public static int poolStakeId()
+    {
+        return 6;
+    }
+
+    public static int poolStakeSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int poolStakeEncodingOffset()
+    {
+        return 61;
+    }
+
+    public static int poolStakeEncodingLength()
+    {
+        return 2;
+    }
+
+    public static String poolStakeMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static short poolStakeNullValue()
+    {
+        return (short)-32768;
+    }
+
+    public static short poolStakeMinValue()
+    {
+        return (short)-32767;
+    }
+
+    public static short poolStakeMaxValue()
+    {
+        return (short)32767;
+    }
+
+    public short poolStake()
+    {
+        return buffer.getShort(offset + 61, java.nio.ByteOrder.LITTLE_ENDIAN);
+    }
+
+
+    public static int matchCntId()
+    {
+        return 7;
+    }
+
+    public static int matchCntSinceVersion()
+    {
+        return 0;
+    }
+
+    public static int matchCntEncodingOffset()
+    {
+        return 63;
+    }
+
+    public static int matchCntEncodingLength()
+    {
+        return 2;
+    }
+
+    public static String matchCntMetaAttribute(final MetaAttribute metaAttribute)
+    {
+        if (MetaAttribute.PRESENCE == metaAttribute)
+        {
+            return "required";
+        }
+
+        return "";
+    }
+
+    public static short matchCntNullValue()
+    {
+        return (short)-32768;
+    }
+
+    public static short matchCntMinValue()
+    {
+        return (short)-32767;
+    }
+
+    public static short matchCntMaxValue()
+    {
+        return (short)32767;
+    }
+
+    public short matchCnt()
+    {
+        return buffer.getShort(offset + 63, java.nio.ByteOrder.LITTLE_ENDIAN);
+    }
+
+
+    private final GroupDecoder group = new GroupDecoder(this);
+
+    public static long groupDecoderId()
+    {
+        return 10;
+    }
+
+    public static int groupDecoderSinceVersion()
+    {
+        return 0;
+    }
+
+    public GroupDecoder group()
+    {
+        group.wrap(buffer);
+        return group;
+    }
+
+    public static final class GroupDecoder
+        implements Iterable<GroupDecoder>, java.util.Iterator<GroupDecoder>
+    {
+        public static final int HEADER_SIZE = 4;
+        private final SampleGroupDecoder parentMessage;
         private DirectBuffer buffer;
         private int count;
         private int index;
         private int offset;
         private int blockLength;
 
-        GamesDecoder(final Body1Decoder parentMessage)
+        GroupDecoder(final SampleGroupDecoder parentMessage)
         {
             this.parentMessage = parentMessage;
         }
@@ -232,7 +541,7 @@ public final class Body1Decoder
             count = (buffer.getShort(limit + 2, java.nio.ByteOrder.LITTLE_ENDIAN) & 0xFFFF);
         }
 
-        public GamesDecoder next()
+        public GroupDecoder next()
         {
             if (index >= count)
             {
@@ -276,7 +585,7 @@ public final class Body1Decoder
             return count;
         }
 
-        public java.util.Iterator<GamesDecoder> iterator()
+        public java.util.Iterator<GroupDecoder> iterator()
         {
             return this;
         }
@@ -293,7 +602,7 @@ public final class Body1Decoder
 
         public static int matchNoId()
         {
-            return 4;
+            return 11;
         }
 
         public static int matchNoSinceVersion()
@@ -316,10 +625,6 @@ public final class Body1Decoder
             if (MetaAttribute.PRESENCE == metaAttribute)
             {
                 return "required";
-            }
-            if (MetaAttribute.SEMANTIC_TYPE == metaAttribute)
-            {
-                return "int";
             }
 
             return "";
@@ -348,7 +653,7 @@ public final class Body1Decoder
 
         public static int matchSelId()
         {
-            return 5;
+            return 12;
         }
 
         public static int matchSelSinceVersion()
@@ -371,10 +676,6 @@ public final class Body1Decoder
             if (MetaAttribute.PRESENCE == metaAttribute)
             {
                 return "required";
-            }
-            if (MetaAttribute.SEMANTIC_TYPE == metaAttribute)
-            {
-                return "int";
             }
 
             return "";
@@ -403,7 +704,7 @@ public final class Body1Decoder
 
         public static int matchOddsId()
         {
-            return 6;
+            return 13;
         }
 
         public static int matchOddsSinceVersion()
@@ -426,10 +727,6 @@ public final class Body1Decoder
             if (MetaAttribute.PRESENCE == metaAttribute)
             {
                 return "required";
-            }
-            if (MetaAttribute.SEMANTIC_TYPE == metaAttribute)
-            {
-                return "int";
             }
 
             return "";
@@ -458,7 +755,7 @@ public final class Body1Decoder
 
         public static int matchHandiId()
         {
-            return 7;
+            return 14;
         }
 
         public static int matchHandiSinceVersion()
@@ -481,10 +778,6 @@ public final class Body1Decoder
             if (MetaAttribute.PRESENCE == metaAttribute)
             {
                 return "required";
-            }
-            if (MetaAttribute.SEMANTIC_TYPE == metaAttribute)
-            {
-                return "int";
             }
 
             return "";
@@ -535,7 +828,7 @@ public final class Body1Decoder
             return builder;
         }
         
-        public GamesDecoder sbeSkip()
+        public GroupDecoder sbeSkip()
         {
 
             return this;
@@ -549,7 +842,7 @@ public final class Body1Decoder
             return "";
         }
 
-        final Body1Decoder decoder = new Body1Decoder();
+        final SampleGroupDecoder decoder = new SampleGroupDecoder();
         decoder.wrap(buffer, initialOffset, actingBlockLength, actingVersion);
 
         return decoder.appendTo(new StringBuilder()).toString();
@@ -564,7 +857,7 @@ public final class Body1Decoder
 
         final int originalLimit = limit();
         limit(initialOffset + actingBlockLength);
-        builder.append("[Body1](sbeTemplateId=");
+        builder.append("[SampleGroup](sbeTemplateId=");
         builder.append(TEMPLATE_ID);
         builder.append("|sbeSchemaId=");
         builder.append(SCHEMA_ID);
@@ -583,24 +876,50 @@ public final class Body1Decoder
         }
         builder.append(BLOCK_LENGTH);
         builder.append("):");
+        builder.append("header=");
+        final HeaderDecoder header = this.header();
+        if (header != null)
+        {
+            header.appendTo(builder);
+        }
+        else
+        {
+            builder.append("null");
+        }
+        builder.append('|');
         builder.append("blockIdx=");
         builder.append(this.blockIdx());
         builder.append('|');
-        builder.append("games=[");
-        final int gamesOriginalOffset = games.offset;
-        final int gamesOriginalIndex = games.index;
-        final GamesDecoder games = this.games();
-        if (games.count() > 0)
+        builder.append("progNum=");
+        builder.append(this.progNum());
+        builder.append('|');
+        builder.append("betMode=");
+        for (int i = 0; i < betModeLength() && this.betMode(i) > 0; i++)
         {
-            while (games.hasNext())
+            builder.append((char)this.betMode(i));
+        }
+        builder.append('|');
+        builder.append("poolStake=");
+        builder.append(this.poolStake());
+        builder.append('|');
+        builder.append("matchCnt=");
+        builder.append(this.matchCnt());
+        builder.append('|');
+        builder.append("group=[");
+        final int groupOriginalOffset = group.offset;
+        final int groupOriginalIndex = group.index;
+        final GroupDecoder group = this.group();
+        if (group.count() > 0)
+        {
+            while (group.hasNext())
             {
-                games.next().appendTo(builder);
+                group.next().appendTo(builder);
                 builder.append(',');
             }
             builder.setLength(builder.length() - 1);
         }
-        games.offset = gamesOriginalOffset;
-        games.index = gamesOriginalIndex;
+        group.offset = groupOriginalOffset;
+        group.index = groupOriginalIndex;
         builder.append(']');
 
         limit(originalLimit);
@@ -608,16 +927,16 @@ public final class Body1Decoder
         return builder;
     }
     
-    public Body1Decoder sbeSkip()
+    public SampleGroupDecoder sbeSkip()
     {
         sbeRewind();
-        GamesDecoder games = this.games();
-        if (games.count() > 0)
+        GroupDecoder group = this.group();
+        if (group.count() > 0)
         {
-            while (games.hasNext())
+            while (group.hasNext())
             {
-                games.next();
-                games.sbeSkip();
+                group.next();
+                group.sbeSkip();
             }
         }
 

@@ -30,11 +30,11 @@ public class DataFactory {
         header.setStartCode("ATZ");
         header.setTransType("100");
         header.setTransLen(200);
-        header.setTransId(UUID.randomUUID().toString().substring(16));
+        header.setTransId(UUID.randomUUID().toString().substring(0,4));
         header.setTkserNum(1);
         header.setResyncYn(false);
         header.setResultCd("00");
-        header.setTagNum("1234567890123456");
+        header.setTagNum("1234");
         header.setGameId("01");
         header.setTotalStake(nextInt(10) * 10000);
         header.setGcBlockCnt(4);
@@ -45,6 +45,8 @@ public class DataFactory {
         int betMode = nextInt(20) + 1;
         bodyA.setBetMode(betMode + "");
         bodyA.setPoolStake(header.getTotalStake());
+
+        bodyA.setHeader(header);
 
 
         int matchCnt = nextInt(10) + 1;

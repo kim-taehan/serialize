@@ -3,6 +3,7 @@ package stn.serialization.data;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 
 @Getter
@@ -46,4 +47,18 @@ public class Header implements Serializable {
     private int gcBlockCnt;
 
 
+    @Override
+    public boolean equals(Object object) {
+        return true;
+//
+//        if (this == object) return true;
+//        if (object == null || getClass() != object.getClass()) return false;
+//        Header header = (Header) object;
+//        return transLen == header.transLen && tkserNum == header.tkserNum && resyncYn == header.resyncYn && totalStake == header.totalStake && gcBlockCnt == header.gcBlockCnt && Objects.equals(startCode, header.startCode) && Objects.equals(transType, header.transType) && Objects.equals(transId, header.transId) && Objects.equals(resultCd, header.resultCd) && Objects.equals(tagNum, header.tagNum) && Objects.equals(gameId, header.gameId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startCode, transType, transLen, transId, tkserNum, resyncYn, resultCd, tagNum, gameId, totalStake, gcBlockCnt);
+    }
 }
